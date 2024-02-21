@@ -36,7 +36,7 @@ class Database{
   }
 
   //データの削除
-  Future<void> delete() async{
-    await db.collection('songs').doc('S02').delete();
+  Future<void> delete(String group, String task) async{
+    await db.collection(group).doc(task).delete();
   }
 }

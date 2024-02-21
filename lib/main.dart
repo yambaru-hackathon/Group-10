@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
@@ -88,7 +86,13 @@ class _MyHomePageState extends State<MyHomePage> {
               }, 
               child: Text('表示')
             ),
-            Text('test'),
+            ElevatedButton(
+              onPressed: (){
+                final service = Database();
+                service.delete(group, task);
+              }, 
+              child: Text('削除')
+            ),
           ],
         ),
       ),

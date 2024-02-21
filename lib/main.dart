@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 void main() {
   runApp(const MyApp());
-}
+} //aaaaaaaaaaaaaaaaaaaanagai
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -62,7 +62,7 @@ class _MyHomePageState extends State<MyHomePage> {
         onPressed: _incrementCounter,
         tooltip: 'Increment',
         child: const Icon(Icons.add),
-      ), 
+      ),
     );
   }
 }

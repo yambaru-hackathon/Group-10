@@ -41,7 +41,9 @@ class _MyHomePageState extends State<MyHomePage> {
     String group = '';
     String task = '';
     String deadline = '';
-    String data = '';
+    String url = '';
+    String genre = '';
+    var data = '';
 
     return Scaffold(
       body: Center(
@@ -72,17 +74,47 @@ class _MyHomePageState extends State<MyHomePage> {
                 deadline = text;
               },
             ),
+            TextField(
+              decoration: InputDecoration(
+                hintText: 'url',
+              ),
+              onChanged: (text){
+                url = text;
+              },
+            ),
+            TextField(
+              decoration: InputDecoration(
+                hintText: 'genre',
+              ),
+              onChanged: (text){
+                genre = text;
+              },
+            ),
             ElevatedButton(
               onPressed: (){
                 final service = Database();
-                service.create(group, task, deadline);
+                service.create(group, task, deadline, url);
               }, 
               child: Text('追加')
             ),
             ElevatedButton(
               onPressed: (){
-                final service = Database();
-                data = service.read(group, task).toString();
+                Database().addurl(group, task, url);
+              }, 
+              child: Text('url追加')
+            ),
+            ElevatedButton(
+              onPressed: (){
+                Database().delurl(group, task, url);
+              }, 
+              child: Text('url削除')
+            ),
+            ElevatedButton(
+              onPressed: () {
+                setState(() async{
+                  data = await Database().read(group, task, genre);
+                  debugPrint(data);
+                });
               }, 
               child: Text('表示')
             ),
@@ -96,6 +128,6 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
       ),
-      );
+    );
   }
 }

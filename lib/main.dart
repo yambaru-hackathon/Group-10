@@ -42,9 +42,11 @@ class _MyHomePageState extends State<MyHomePage> {
     String task = '';
     String deadline = '';
     String url = '';
-    String genre = '';
+    String field = '';
+    String newdata = '';
     var data = '';
-
+    List doclist = [];
+    
     return Scaffold(
       body: Center(
         child: Column(
@@ -84,10 +86,18 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             TextField(
               decoration: InputDecoration(
-                hintText: 'genre',
+                hintText: 'field',
               ),
               onChanged: (text){
-                genre = text;
+                field = text;
+              },
+            ),
+            TextField(
+              decoration: InputDecoration(
+                hintText: 'newdata',
+              ),
+              onChanged: (text){
+                newdata = text;
               },
             ),
             ElevatedButton(
@@ -112,11 +122,24 @@ class _MyHomePageState extends State<MyHomePage> {
             ElevatedButton(
               onPressed: () {
                 setState(() async{
-                  data = await Database().read(group, task, genre);
+                  data = await Database().fldread(group, task, field);
                   debugPrint(data);
                 });
               }, 
               child: Text('表示')
+            ),
+            ElevatedButton(
+              onPressed: () async{
+                doclist = await Database().docread(group);
+                debugPrint(doclist.toString());
+              }, 
+              child: Text('task一覧')
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Database().update(group, task, field, newdata);
+              }, 
+              child: Text('更新')
             ),
             ElevatedButton(
               onPressed: (){

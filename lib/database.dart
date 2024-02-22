@@ -31,25 +31,54 @@ class Database{
   }
 
   //データの読み込み
-  Future<dynamic> read(String group, String task, String genre) async{
+  Future<dynamic> fldread(String group, String task, String field) async{
     DocumentSnapshot dcsn = await db.collection(group).doc(task).get();
     Map<String, dynamic> data = dcsn.data() as Map<String, dynamic>;
 
-    //通常はStringを返しgenreがurlの時のみListを返す
-    return data[genre];
+    //通常はStringを返しfieldがurlの時のみListを返す
+    return data[field];
+  }
+
+  //全てのドキュメントを取得
+  Future<List> docread(String group) async{
+    List docList = [];
+    await FirebaseFirestore.instance.collection(group).get().then(
+          (QuerySnapshot querySnapshot) => {
+            querySnapshot.docs.forEach(
+              (doc) {
+                docList.add(doc.id);
+              },
+            ),
+          },
+        );
+    return docList;
   }
 
   //データの更新
-  Future<void> update() async{
-    await db.collection('songs').doc('S01').update(
-      {
-        'title': 'test',
-      }
-    );
+  Future<void> update(String group, String task, String field, String newdata) async{
+    if(field != 'url'){
+      await db.collection(group).doc(task).update(
+        {
+          field: newdata,
+        }
+      );
+    }
   }
 
   //データの削除
-  Future<void> delete(String group, String task) async{
-    await db.collection(group).doc(task).delete();
+  Future<void> delete(String group, [String task = '']) async{
+    if(task != ''){
+      await db.collection(group).doc(task).delete();
+    }else{
+      final users = FirebaseFirestore.instance.collection(group);
+      WriteBatch batch = FirebaseFirestore.instance.batch();
+
+      users.get().then((querySnapshot) {
+          querySnapshot.docs.forEach((document) {
+          batch.delete(document.reference);
+        });
+        batch.commit();
+      });
+    }
   }
 }

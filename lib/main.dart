@@ -44,7 +44,7 @@ class _MyHomePageState extends State<MyHomePage> {
     String url = '';
     String field = '';
     String newdata = '';
-    var data = '';
+    var data = [];
     List doclist = [];
     
     return Scaffold(
@@ -103,7 +103,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ElevatedButton(
               onPressed: (){
                 final service = Database();
-                service.create(group, task, deadline, url);
+                Database().create(group, task, deadline, url);
               }, 
               child: Text('追加')
             ),
@@ -123,10 +123,10 @@ class _MyHomePageState extends State<MyHomePage> {
               onPressed: () {
                 setState(() async{
                   data = await Database().fldread(group, task, field);
-                  debugPrint(data);
+                  debugPrint(data.toString());
                 });
               }, 
-              child: Text('表示')
+              child: Text('読み込み')
             ),
             ElevatedButton(
               onPressed: () async{

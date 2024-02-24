@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'addtask.dart';
 import 'firebase_options.dart';
 import 'database.dart';
 
-void main() async{
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(const MyApp());
+  runApp(const AddTask());
 }
 
 class MyApp extends StatelessWidget {
@@ -46,17 +47,17 @@ class _MyHomePageState extends State<MyHomePage> {
     String newdata = '';
     var data = [];
     List doclist = [];
-    
+
     return Scaffold(
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children:[
+          children: [
             TextField(
               decoration: InputDecoration(
                 hintText: 'Group',
               ),
-              onChanged: (text){
+              onChanged: (text) {
                 group = text;
               },
             ),
@@ -64,7 +65,7 @@ class _MyHomePageState extends State<MyHomePage> {
               decoration: InputDecoration(
                 hintText: 'task',
               ),
-              onChanged: (text){
+              onChanged: (text) {
                 task = text;
               },
             ),
@@ -72,7 +73,7 @@ class _MyHomePageState extends State<MyHomePage> {
               decoration: InputDecoration(
                 hintText: 'deadline',
               ),
-              onChanged: (text){
+              onChanged: (text) {
                 deadline = text;
               },
             ),
@@ -80,7 +81,7 @@ class _MyHomePageState extends State<MyHomePage> {
               decoration: InputDecoration(
                 hintText: 'url',
               ),
-              onChanged: (text){
+              onChanged: (text) {
                 url = text;
               },
             ),
@@ -88,7 +89,7 @@ class _MyHomePageState extends State<MyHomePage> {
               decoration: InputDecoration(
                 hintText: 'field',
               ),
-              onChanged: (text){
+              onChanged: (text) {
                 field = text;
               },
             ),
@@ -96,58 +97,51 @@ class _MyHomePageState extends State<MyHomePage> {
               decoration: InputDecoration(
                 hintText: 'newdata',
               ),
-              onChanged: (text){
+              onChanged: (text) {
                 newdata = text;
               },
             ),
             ElevatedButton(
-              onPressed: (){
-                final service = Database();
-                Database().create(group, task, deadline, url);
-              }, 
-              child: Text('追加')
-            ),
+                onPressed: () {
+                  final service = Database();
+                  Database().create(group, task, deadline, url);
+                },
+                child: Text('追加')),
             ElevatedButton(
-              onPressed: (){
-                Database().addurl(group, task, url);
-              }, 
-              child: Text('url追加')
-            ),
+                onPressed: () {
+                  Database().addurl(group, task, url);
+                },
+                child: Text('url追加')),
             ElevatedButton(
-              onPressed: (){
-                Database().delurl(group, task, url);
-              }, 
-              child: Text('url削除')
-            ),
+                onPressed: () {
+                  Database().delurl(group, task, url);
+                },
+                child: Text('url削除')),
             ElevatedButton(
-              onPressed: () {
-                setState(() async{
-                  data = await Database().fldread(group, task, field);
-                  debugPrint(data.toString());
-                });
-              }, 
-              child: Text('読み込み')
-            ),
+                onPressed: () {
+                  setState(() async {
+                    data = await Database().fldread(group, task, field);
+                    debugPrint(data.toString());
+                  });
+                },
+                child: Text('読み込み')),
             ElevatedButton(
-              onPressed: () async{
-                doclist = await Database().docread(group);
-                debugPrint(doclist.toString());
-              }, 
-              child: Text('task一覧')
-            ),
+                onPressed: () async {
+                  doclist = await Database().docread(group);
+                  debugPrint(doclist.toString());
+                },
+                child: Text('task一覧')),
             ElevatedButton(
-              onPressed: () {
-                Database().update(group, task, field, newdata);
-              }, 
-              child: Text('更新')
-            ),
+                onPressed: () {
+                  Database().update(group, task, field, newdata);
+                },
+                child: Text('更新')),
             ElevatedButton(
-              onPressed: (){
-                final service = Database();
-                service.delete(group, task);
-              }, 
-              child: Text('削除')
-            ),
+                onPressed: () {
+                  final service = Database();
+                  service.delete(group, task);
+                },
+                child: Text('削除')),
           ],
         ),
       ),

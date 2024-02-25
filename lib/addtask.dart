@@ -3,40 +3,47 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 class AddTask extends StatelessWidget {
-  const AddTask({super.key});
+  AddTask({super.key, required this.group});
+  List<String> group;
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-            title: const Center(child: Text('追加')),
+            title: const Center(child: Text('課題追加')),
             backgroundColor: const Color.fromRGBO(189, 255, 255, 1)),
-        body: const CreateTask(),
+        body: CreateTask(group: group),
       ),
     );
   }
 }
 
 class CreateTask extends StatefulWidget {
-  const CreateTask({super.key});
+  CreateTask({super.key, required this.group});
+  List<String> group;
 
   @override
-  State<CreateTask> createState() => _CreateTaskState();
+  State<CreateTask> createState() =>
+      _CreateTaskState(group: group, selectedItem: group[0]);
 }
 
 class _CreateTaskState extends State<CreateTask> {
+  _CreateTaskState({required this.group, required this.selectedItem});
   DateTime selectedDate = DateTime.now();
   double _sliderValue = 0;
   final task = TextEditingController();
   final url = TextEditingController();
   List<dynamic> doclist = [];
   bool have = false;
+  List<String> group;
+  String selectedItem;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Column(
+        body: ListView(
+      padding: EdgeInsets.only(left: 60, right: 60),
       children: [
         SizedBox(height: 20),
         Row(
@@ -49,11 +56,7 @@ class _CreateTaskState extends State<CreateTask> {
               ),
             ),
             SizedBox(width: 30),
-            Container(
-                color: Color.fromRGBO(195, 195, 195, 1),
-                width: 100,
-                height: 30,
-                child: PullDown(items: ['普通', '目標'], firsttag: '普通')),
+            PullDown(items: ['普通', '目標'], firsttag: '普通'),
           ],
         ),
         SizedBox(height: 30),
@@ -186,7 +189,24 @@ class _CreateTaskState extends State<CreateTask> {
             Spacer(
               flex: 1,
             ),
-            PullDown(items: ['メディア'], firsttag: 'メディア'),
+            DropdownButton<String>(
+              value: selectedItem, // 選択されている項目
+              items: group.map((String item) {
+                return DropdownMenuItem<String>(
+                  value: item,
+                  child: Text(item),
+                );
+              }).toList(),
+              onChanged: (String? newValue) {
+                // 選択された項目が変更されたときに呼び出されるコールバック関数
+                // 変更された値を_selectedItemに設定
+                setState(() {
+                  debugPrint(selectedItem);
+                  selectedItem = newValue!;
+                  debugPrint(selectedItem);
+                });
+              },
+            ),
             Spacer(
               flex: 2,
             ),
@@ -195,7 +215,7 @@ class _CreateTaskState extends State<CreateTask> {
         SizedBox(height: 40),
         ElevatedButton(
           onPressed: () async {
-            doclist = await Database().docread('メディア');
+            doclist = await Database().docread(selectedItem!);
             doclist.forEach(
               (element) {
                 if (element == task.text) {
@@ -213,12 +233,22 @@ class _CreateTaskState extends State<CreateTask> {
                     );
                   });
             } else {
-              Database().create(
-                  'メディア',
-                  task.text,
-                  '${selectedDate.year}/${selectedDate.month}/${selectedDate.day}',
-                  url.text,
-                  _sliderValue.toInt());
+              if (task.text != '') {
+                Database().create(
+                    selectedItem!,
+                    task.text,
+                    '${selectedDate.year}/${selectedDate.month}/${selectedDate.day}',
+                    url.text,
+                    _sliderValue.toInt());
+              } else {
+                showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        content: Text('課題が入力されていません。'),
+                      );
+                    });
+              }
             }
           },
           child: Text(

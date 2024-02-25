@@ -9,10 +9,9 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(const AddTask());
+  runApp(AddTask(group: ['メディア', '情報', '生物', '機械']));
 }
 
-/*
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -149,4 +148,3 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
-*/

@@ -217,7 +217,8 @@ class _CreateTaskState extends State<CreateTask> {
                   'メディア',
                   task.text,
                   '${selectedDate.year}/${selectedDate.month}/${selectedDate.day}',
-                  url.text);
+                  url.text,
+                  _sliderValue.toInt());
             }
           },
           child: Text(

@@ -12,7 +12,7 @@ void main() async {
   runApp(const AddTask());
 }
 
-//
+/*
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -105,7 +105,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ElevatedButton(
                 onPressed: () {
                   final service = Database();
-                  Database().create(group, task, deadline, url);
+                  Database().create(group, task, deadline, url, 0);
                 },
                 child: Text('追加')),
             ElevatedButton(
@@ -149,3 +149,4 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
+*/

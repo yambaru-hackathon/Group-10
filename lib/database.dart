@@ -6,12 +6,13 @@ class Database {
 
   //データの追加
   Future<void> create(
-      String group, String task, String deadline, String url) async {
+      String group, String task, String deadline, String url, int level) async {
     await db.collection(group).doc(task).set({
       'group': group,
       'task': task,
       'deadline': deadline,
       'url': [url],
+      'level': [level],
     });
   }
 
@@ -26,6 +27,13 @@ class Database {
   Future<void> delurl(String group, String task, String url) async {
     await db.collection(group).doc(task).update({
       'url': FieldValue.arrayRemove([url]),
+    });
+  }
+
+  //levelの追加
+  Future<void> addlevel(String group, String task, int level) async {
+    await db.collection(group).doc(task).update({
+      'level': FieldValue.arrayUnion([level]),
     });
   }
 

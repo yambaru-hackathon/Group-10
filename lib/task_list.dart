@@ -8,8 +8,8 @@ class task_list_338 extends StatefulWidget {
   State<task_list_338> createState() => _task_list_338State();
 }
 
-bool menu1_open = false; //グループ分けのやつ
-bool menu2_open = false; //並び替えのやつ
+String dropdownVal1 = "hard";
+String dropdownVal2 = "all";
 
 Widget _buildBackground() {
   return Container(
@@ -68,29 +68,72 @@ class _task_list_338State extends State<task_list_338> {
                   ),
                   Expanded(
                     flex: 4,
-                    child: ElevatedButton.icon(
-                      icon: const Icon(
-                        Icons.expand_more,
-                        color: Colors.black,
+                    child: Container(
+                      color: Color.fromARGB(255, 160, 189, 212),
+                      child: DropdownButton(
+                        underline: Container(
+                          height: 0,
+                        ),
+                        value: dropdownVal2,
+                        icon:
+                            const Icon(Icons.expand_more, color: Colors.black),
+                        style: const TextStyle(color: Colors.black),
+                        dropdownColor: const Color.fromARGB(255, 160, 189, 212),
+                        onChanged: (String? newVal2) {
+                          setState(() {
+                            dropdownVal2 = newVal2!;
+                          });
+                        },
+                        items: const [
+                          DropdownMenuItem<String>(
+                            value: "all",
+                            child: Text("全部"),
+                          ),
+                          DropdownMenuItem<String>(
+                            value: "grupe",
+                            child: Text("グループ"),
+                          ),
+                        ],
                       ),
-                      label: const Text("全部",
-                          style: TextStyle(color: Colors.black)),
-                      style: ElevatedButton.styleFrom(
-                          backgroundColor: Color.fromARGB(255, 160, 214, 237),
-                          shape: BeveledRectangleBorder(side: BorderSide.none)),
-                      onPressed: () {},
                     ),
                   ),
                   Expanded(
                     flex: 4,
-                    child: ElevatedButton.icon(
-                      icon: const Icon(Icons.expand_more, color: Colors.black),
-                      label: const Text("難易度準(難)",
-                          style: TextStyle(color: Colors.black)),
-                      style: ElevatedButton.styleFrom(
-                          backgroundColor: Color.fromARGB(255, 109, 202, 236),
-                          shape: BeveledRectangleBorder(side: BorderSide.none)),
-                      onPressed: () {},
+                    child: Container(
+                      color: Color.fromARGB(255, 126, 176, 216),
+                      child: DropdownButton(
+                        underline: Container(
+                          height: 0,
+                        ),
+                        value: dropdownVal1,
+                        icon:
+                            const Icon(Icons.expand_more, color: Colors.black),
+                        style: const TextStyle(color: Colors.black),
+                        dropdownColor: const Color.fromARGB(255, 126, 176, 216),
+                        onChanged: (String? newVal1) {
+                          setState(() {
+                            dropdownVal1 = newVal1!;
+                          });
+                        },
+                        items: const [
+                          DropdownMenuItem<String>(
+                            value: "hard",
+                            child: Text("難易度準(難)"),
+                          ),
+                          DropdownMenuItem<String>(
+                            value: "ez",
+                            child: Text("難易度準(簡)"),
+                          ),
+                          DropdownMenuItem<String>(
+                            value: "short",
+                            child: Text("期限表示(短)"),
+                          ),
+                          DropdownMenuItem<String>(
+                            value: "long",
+                            child: Text("期限表示(長)"),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ],
@@ -98,12 +141,13 @@ class _task_list_338State extends State<task_list_338> {
             ],
           ),
         ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
+        floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
         floatingActionButton: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
           children: [
             FloatingActionButton(
               onPressed: () {},
-              backgroundColor: Color.fromARGB(255, 241, 249, 0),
+              backgroundColor: Color.fromARGB(255, 228, 228, 228),
               child: Icon(
                 Icons.groups,
                 color: Colors.black,
@@ -113,7 +157,7 @@ class _task_list_338State extends State<task_list_338> {
             ),
             FloatingActionButton(
               onPressed: () {},
-              backgroundColor: Colors.red,
+              backgroundColor: Color.fromARGB(255, 228, 228, 228),
               child: Icon(
                 Icons.calendar_month,
                 color: Colors.black,

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'addtask.dart';
 import 'firebase_options.dart';
 import 'database.dart';
+import 'list_ui.dart';
+import 'newgroup.dart';
 import 'task_list.dart';
 
 void main() async {
@@ -10,7 +11,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(task_list_338());
+  runApp(const newgroup());
 }
 
 class MyApp extends StatelessWidget {

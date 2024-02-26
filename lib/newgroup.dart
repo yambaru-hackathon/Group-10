@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 
 void main() {
@@ -22,7 +23,8 @@ const newgroup({super.key});
         ),
       ),
       body: const Center(
-        child: ChangeForm(),   //文字入力するための関数を呼び出している
+        child: ChangeForm(),  
+         //文字入力するための関数を呼び出している
       ),
 
     ); 
@@ -35,6 +37,7 @@ class ChangeForm extends StatefulWidget{
 
   @override
   _ChangeFormState createState() => _ChangeFormState();
+
 }
 
 
@@ -42,8 +45,33 @@ class _ChangeFormState extends State<ChangeForm>{
   final _formKey = GlobalKey<FormState>();
   String group='';
   String pass='';
-  String a='';
-  String b='';
+  late SharedPreferences prefs;
+  String name='';
+
+Future<void> setInstance() async{
+  prefs = await SharedPreferences.getInstance();
+}
+
+Future<void> setDate() async{
+  await prefs.setString('name', group);
+}
+
+void getDate(){
+  name =  prefs.getString('name') ?? '';
+  setState(() {});
+
+}
+
+
+
+@override
+void initState(){
+  super.initState();
+  setInstance();
+}
+
+  
+
 
   void _handleText(String e){
     setState(() {
@@ -57,15 +85,6 @@ class _ChangeFormState extends State<ChangeForm>{
       pass = e;
     });
   }
-
-  
-void _submission() {
-  a=group;
-  b=pass;
-}
-
-
-
 
 
 
@@ -82,6 +101,12 @@ void _submission() {
             color: Colors.blueAccent,
             fontSize: 10.0),
         ),
+        Text(
+          name,
+          style: const TextStyle(
+            color: Colors.blueAccent,
+            fontSize: 10.0),
+        ),
 
         TextField(
           enabled:true,
@@ -92,43 +117,22 @@ void _submission() {
           onChanged: _handleText,
         ),
 
+      
         
-        Text(
-          'Password',
-          style: const TextStyle(
-            color: Colors.blueAccent,
-            fontSize: 10.0),
-        ),
-
-
-        TextField(
-          enabled:true,
-          maxLength: 10, //入力数
-          style: const TextStyle(color:Colors.red),
-          obscureText: true,
-          maxLines:1,
-          onChanged: _handleText,
-        ),
         ElevatedButton(
-              onPressed: _submission,
+              onPressed: (){
+                setDate();
+              },
               child: Text('保存'),
             ),
 
-        
-        Text(
-          a,
-          style: const TextStyle(
-            color: Color.fromARGB(255, 0, 0, 0),
-            fontSize: 50.0),
-        ),
-
-        Text(
-          b,
-          style: const TextStyle(
-            color: Color.fromARGB(255, 0, 0, 0),
-            fontSize: 50.0),
-        ),
-
+            
+        ElevatedButton(
+              onPressed: (){
+                getDate();
+              },
+              child: Text('表示'),
+            ),
 
 
     ],

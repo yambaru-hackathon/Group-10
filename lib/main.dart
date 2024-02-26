@@ -3,13 +3,14 @@ import 'package:firebase_core/firebase_core.dart';
 import 'addtask.dart';
 import 'firebase_options.dart';
 import 'database.dart';
+import 'task_list.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(AddTask(group: ['メディア', '情報', '生物', '機械']));
+  runApp(task_list_338());
 }
 
 class MyApp extends StatelessWidget {

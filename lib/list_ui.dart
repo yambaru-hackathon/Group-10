@@ -1,6 +1,7 @@
 import 'package:first/database.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/link.dart';
+//import 'package:url_launcher/link.dart';
 
 class ListUiWidget extends StatelessWidget {
   ListUiWidget(
@@ -89,10 +90,10 @@ class _ListUiState extends State<ListUi> {
         );
   }
 
-  Widget _linkItem(String url) {
+  Widget _link(String title) {
     return Link(
       // 開きたいWebページのURLを指定
-      uri: Uri.parse(url),
+      uri: Uri.parse(title),
       // targetについては後述
       target: LinkTarget.blank,
       builder: (BuildContext ctx, FollowLink? openLink) {
@@ -105,8 +106,8 @@ class _ListUiState extends State<ListUi> {
             tapTargetSize: MaterialTapTargetSize.shrinkWrap,
           ),
           child: Text(
-            url,
-            style: TextStyle(fontSize: 12),
+            title,
+            style: const TextStyle(fontSize: 12),
           ),
         );
       },
@@ -125,7 +126,7 @@ class _ListUiState extends State<ListUi> {
               Container(
                 margin: EdgeInsets.all(10.0),
               ),
-              _linkItem(title),
+              _link(title),
             ],
           )),
       onTap: () {

@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 
@@ -42,7 +40,6 @@ class ChangeForm extends StatefulWidget{
 
 
 class _ChangeFormState extends State<ChangeForm>{
-  final _formKey = GlobalKey<FormState>();
   String group='';
   String pass='';
   late SharedPreferences prefs;
@@ -91,9 +88,13 @@ void initState(){
 
 @override
   Widget build(BuildContext context){
-  return Container(
+    return Container(
+    
+    
     padding: const EdgeInsets.all(50.0),
+    
     child:Column(
+      
       children: [
         Text(
           'グループ名',
@@ -130,9 +131,24 @@ void initState(){
         ElevatedButton(
               onPressed: (){
                 getDate();
+                
               },
               child: Text('表示'),
             ),
+
+      ElevatedButton(
+              onPressed: () {
+                
+        Navigator.of(context).pop(); // 前の画面へ遷移
+      },
+              child: Text('<',
+        style: TextStyle(
+          color: Colors.white,
+          fontWeight: FontWeight.bold,
+          fontSize: 12.0,
+        ),),
+      ),
+
 
 
     ],

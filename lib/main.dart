@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
 import 'newgroup.dart';
 
 void main() {
@@ -57,14 +57,29 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final int _counter = 0;
+  String geto = '';
 
   void _incrementCounter() {
 
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => const newgroup()),
+      
     );
+  }
+
+   @override
+  void initState() {
+    super.initState();
+    _loadCounter();
+  }
+
+  _loadCounter() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.reload();
+    setState(() {
+      geto = prefs.getString('name') ?? '';
+    });  
   }
 
 
@@ -111,7 +126,7 @@ class _MyHomePageState extends State<MyHomePage> {
               'You have pushed the button this many times:',
             ),
             Text(
-              '$_counter',
+              '$geto',
               style: Theme.of(context).textTheme.headlineMedium,
             ),
           ],

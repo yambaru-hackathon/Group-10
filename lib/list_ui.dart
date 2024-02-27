@@ -1,13 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/link.dart';
 
-class ListUi extends StatefulWidget {
-  const ListUi({Key? key}) : super(key: key);
+class ListUiWidget extends StatelessWidget {
+  ListUiWidget({super.key, required this.group});
+  String group;
 
   @override
-  _ListUiState createState() => _ListUiState();
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: ListUi(group: group),
+    );
+  }
+}
+
+class ListUi extends StatefulWidget {
+  ListUi({Key? key, required this.group}) : super(key: key);
+  String group;
+
+  @override
+  _ListUiState createState() => _ListUiState(group: group);
 }
 
 class _ListUiState extends State<ListUi> {
+  _ListUiState({required this.group});
+  String group;
   double _currentValue = 0;
 
   @override
@@ -15,11 +31,11 @@ class _ListUiState extends State<ListUi> {
     return Scaffold(
       appBar: AppBar(
           centerTitle: true,
-          title: const Text(
-            '化学の資料',
+          title: Text(
+            group,
             style: TextStyle(color: Colors.black),
           ),
-          backgroundColor: Color.fromARGB(255, 16, 199, 184)),
+          backgroundColor: const Color.fromRGBO(189, 255, 255, 1)),
       body: Column(
         // 進捗度スライダー //
         children: <Widget>[
@@ -47,44 +63,29 @@ class _ListUiState extends State<ListUi> {
                   _currentValue = value;
                 });
               }),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Text(
-                "化学の授業資料",
-                style: TextStyle(fontSize: 30),
-              )
-            ],
+          /*
+          Link(
+            // 開きたいWebページのURLを指定
+            uri: Uri.parse('https://virment.com/handling-url-flutter/'),
+            // targetについては後述
+            target: LinkTarget.blank,
+            builder: (BuildContext ctx, FollowLink? openLink) {
+              return TextButton(
+                onPressed: openLink,
+                child: const Text(
+                  'Webサイト表示',
+                  style: TextStyle(fontSize: 12),
+                ),
+                style: ButtonStyle(
+                  padding: MaterialStateProperty.all(EdgeInsets.zero),
+                  // minimumSize:
+                  //     MaterialStateProperty.all(Size.zero),
+                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                ),
+              );
+            },
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              TextButton(onPressed: () {}, child: const Text("URL")),
-              ElevatedButton(
-                onPressed: () {},
-                child: Text("Go"),
-              )
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Text(
-                "化学の過去問",
-                style: TextStyle(fontSize: 30),
-              )
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              TextButton(onPressed: () {}, child: const Text("URL")),
-              ElevatedButton(
-                onPressed: () {},
-                child: Text("Go"),
-              )
-            ],
-          )
+          */
         ],
       ),
     );

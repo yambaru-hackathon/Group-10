@@ -137,6 +137,7 @@ class _CreateTaskState extends State<CreateTask> {
               value: _sliderValue,
               min: 0,
               max: 5,
+              divisions: 5,
               onChanged: (double value) {
                 setState(() {
                   _sliderValue = value;

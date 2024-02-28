@@ -1,5 +1,7 @@
 import 'package:first/database.dart';
 import 'package:flutter/material.dart';
+import 'package:html/parser.dart';
+import 'package:http/http.dart';
 import 'package:url_launcher/link.dart';
 //import 'package:url_launcher/link.dart';
 
@@ -50,50 +52,30 @@ class _ListUiState extends State<ListUi> {
         body: ListView(
           children: List.generate(
             url.length,
-            (index) => _menuItem(url[index]),
+            (index) => FutureBuilder(
+              future: _menuItem(url[index]),
+              builder: (BuildContext context, AsyncSnapshot<Widget> snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return CircularProgressIndicator();
+                } else if (snapshot.hasError) {
+                  return Text('Error: ${snapshot.error}');
+                } else {
+                  return snapshot.data!;
+                }
+              },
+            ),
           ),
-        )
-
-        /*Column(
-        // 進捗度スライダー //
-        children: <Widget>[
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Text("進捗度:", style: TextStyle(fontSize: 20)),
-              Text(
-                _currentValue.toString(),
-                style: TextStyle(fontSize: 20),
-              ),
-              Text(
-                "%",
-                style: TextStyle(fontSize: 20),
-              )
-            ],
-          ),
-          Slider(
-              value: _currentValue,
-              min: 0,
-              max: 100,
-              divisions: 10,
-              onChanged: (value) {
-                setState(() {
-                  _currentValue = value;
-                });
-              }),
-          /*
-          
-          */
-          
-        ],
-      ),*/
-        );
+        ));
   }
 
-  Widget _link(String title) {
+  Future<Widget> _link(String url) async {
+    Response response = await get(Uri.parse(url));
+    var document = parse(response.body);
+    String title = document.head!.getElementsByTagName('title')[0].innerHtml;
+
     return Link(
       // 開きたいWebページのURLを指定
-      uri: Uri.parse(title),
+      uri: Uri.parse(url),
       // targetについては後述
       target: LinkTarget.blank,
       builder: (BuildContext ctx, FollowLink? openLink) {
@@ -114,7 +96,7 @@ class _ListUiState extends State<ListUi> {
     );
   }
 
-  Widget _menuItem(String title) {
+  Future<Widget> _menuItem(String url) async {
     return GestureDetector(
       child: Container(
           padding: EdgeInsets.all(8.0),
@@ -126,7 +108,7 @@ class _ListUiState extends State<ListUi> {
               Container(
                 margin: EdgeInsets.all(10.0),
               ),
-              _link(title),
+              await _link(url),
             ],
           )),
       onTap: () {

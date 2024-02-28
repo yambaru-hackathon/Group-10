@@ -11,7 +11,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(const task_list_338());
+  runApp(task_list_338());
 }
 
 class MyApp extends StatelessWidget {

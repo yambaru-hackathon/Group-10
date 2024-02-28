@@ -10,6 +10,36 @@ class task_list_338 extends StatefulWidget {
 
 String dropdownVal1 = "hard";
 String dropdownVal2 = "all";
+final _items = [];
+final GlobalKey<AnimatedListState> _key = GlobalKey();
+
+void _addItem() {
+  _items.insert(0, "Item ${_items.length + 1}");
+  _key.currentState!.insertItem(0, duration: const Duration(seconds: 1));
+}
+
+void _removeItem(int index) {
+  _key.currentState!.removeItem(
+    index,
+    (_, animation) {
+      return SizeTransition(
+        sizeFactor: animation,
+        child: const Card(
+          margin: EdgeInsets.all(10),
+          color: Colors.red,
+          child: ListTile(
+            title: Text(
+              "Deleted",
+              style: TextStyle(fontSize: 24),
+            ),
+          ),
+        ),
+      );
+    },
+    duration: const Duration(milliseconds: 300),
+  );
+  _items.removeAt(index);
+}
 
 Widget _buildBackground() {
   return Container(
@@ -54,16 +84,20 @@ class _task_list_338State extends State<task_list_338> {
               Row(
                 children: [
                   Expanded(
-                    flex: 1,
-                    child: ElevatedButton(
-                      child: const Text(
-                        "＋",
-                        style: TextStyle(color: Colors.black),
+                    flex: 2,
+                    child: SizedBox(
+                      height: 48,
+                      child: ElevatedButton(
+                        child: const Text(
+                          "＋",
+                          style: TextStyle(color: Colors.black),
+                        ),
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: Color.fromARGB(255, 201, 223, 233),
+                            shape:
+                                BeveledRectangleBorder(side: BorderSide.none)),
+                        onPressed: () {},
                       ),
-                      style: ElevatedButton.styleFrom(
-                          backgroundColor: Color.fromARGB(255, 201, 223, 233),
-                          shape: BeveledRectangleBorder(side: BorderSide.none)),
-                      onPressed: () {},
                     ),
                   ),
                   Expanded(
@@ -92,6 +126,14 @@ class _task_list_338State extends State<task_list_338> {
                           DropdownMenuItem<String>(
                             value: "grupe",
                             child: Text("グループ"),
+                          ),
+                          DropdownMenuItem<String>(
+                            value: "medea",
+                            child: Text("メディあ"),
+                          ),
+                          DropdownMenuItem<String>(
+                            value: "engin",
+                            child: Text("機械"),
                           ),
                         ],
                       ),
@@ -138,6 +180,48 @@ class _task_list_338State extends State<task_list_338> {
                   ),
                 ],
               ),
+              // Column(
+              //   children: [
+              //     const SizedBox(
+              //       height: 10,
+              //     ),
+              //     IconButton(
+              //       onPressed: _addItem,
+              //       icon: const Icon(Icons.add),
+              //     ),
+              //     //
+              //     Expanded(
+              //       child: AnimatedList(
+              //         key: _key,
+              //         initialItemCount: 0,
+              //         padding: const EdgeInsets.all(10),
+              //         itemBuilder: (context, index, animation) {
+              //           return SizeTransition(
+              //             key: UniqueKey(),
+              //             sizeFactor: animation,
+              //             child: Card(
+              //               margin: const EdgeInsets.all(10),
+              //               color: Colors.orange,
+              //               child: ListTile(
+              //                 title: Text(
+              //                   _items[index],
+              //                   style: const TextStyle(fontSize: 24),
+              //                 ),
+              //                 trailing: IconButton(
+              //                   icon: const Icon(Icons.delete),
+              //                   onPressed: () {
+              //                     _removeItem(index);
+              //                   },
+              //                 ),
+              //               ),
+              //             ),
+              //           );
+              //         },
+              //       ),
+              //     ),
+              //     //
+              //   ],
+              // ),
             ],
           ),
         ),

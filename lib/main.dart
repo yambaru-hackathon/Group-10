@@ -13,7 +13,6 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   List url = await Database().fldread('メディア', '数学', 'url');
-  debugPrint(url.toString());
   runApp(ListUiWidget(group: 'メディア', task: '数学', url: url));
 }
 

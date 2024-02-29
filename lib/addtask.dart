@@ -215,7 +215,7 @@ class _CreateTaskState extends State<CreateTask> {
         SizedBox(height: 40),
         ElevatedButton(
           onPressed: () async {
-            doclist = await Database().docread(selectedItem, false);
+            doclist = await Database().docread(selectedItem!);
             doclist.forEach(
               (element) {
                 if (element == task.text) {

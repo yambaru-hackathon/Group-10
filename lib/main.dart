@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'addtask.dart';
 import 'firebase_options.dart';
 import 'database.dart';
-import 'list_ui.dart';
-import 'newgroup.dart';
 import 'task_list.dart';
+import 'newgroup.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(const task_list());
+  runApp(MyWidget());
 }
 
 class MyApp extends StatelessWidget {
@@ -129,7 +129,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: Text('読み込み')),
             ElevatedButton(
                 onPressed: () async {
-                  //doclist = await Database().docread(group);
+                  doclist = await Database().docread(group);
                   debugPrint(doclist.toString());
                 },
                 child: Text('task一覧')),

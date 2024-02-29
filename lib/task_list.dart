@@ -1,29 +1,37 @@
-import 'package:first/database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'newgroup.dart';
+import 'dart:async';
 
-import 'list_ui.dart';
-
-class task_list extends StatelessWidget {
-  const task_list({super.key});
+class MyWidget extends StatelessWidget {
+  const MyWidget({super.key});
+  
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(home: task_list_338());
+    return MaterialApp(
+      home: task_list_338(),
+    );
   }
+  
 }
+
 
 class task_list_338 extends StatefulWidget {
   const task_list_338({super.key});
+  
 
   @override
   State<task_list_338> createState() => _task_list_338State();
 }
 
-String dropdownVal1 = "short";
+
+String dropdownVal1 = "hard";
 String dropdownVal2 = "all";
-final _items = [];
-final GlobalKey<AnimatedListState> _key = GlobalKey();
+String geto='';
+
+
 
 Widget _buildBackground() {
   return Container(
@@ -32,6 +40,7 @@ Widget _buildBackground() {
     color: Colors.black12,
   );
 }
+
 
 Widget _buildFloatingActionButton() {
   return GestureDetector(
@@ -47,29 +56,26 @@ Widget _buildFloatingActionButton() {
       child: const Icon(Icons.add, size: 25, color: Colors.white),
     ),
   );
+  
 }
 
 class _task_list_338State extends State<task_list_338> {
-  List work_list = [];
-  String group = "メディア";
-  @override
+  
+   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    adding();
+    _loadCounter();
   }
 
-  void adding() async {
-    List Work_list = await Database().docread(group, false);
+  _loadCounter() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.reload();
     setState(() {
-      work_list = Work_list;
-    });
+      geto = prefs.getString('name') ?? '';
+    });  
+    await prefs.reload();
   }
 
-  Future<Widget> _text(String task) async {
-    DateTime datetime = await Database().fldread(group, task, "deadline");
-    return Text("${datetime.year}/${datetime.month}/${datetime.day}");
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -80,6 +86,7 @@ class _task_list_338State extends State<task_list_338> {
           "課題一覧",
           textAlign: TextAlign.end,
         ),
+               
         backgroundColor: const Color.fromARGB(255, 54, 171, 244),
       ),
       body: SingleChildScrollView(
@@ -88,25 +95,22 @@ class _task_list_338State extends State<task_list_338> {
             Row(
               children: [
                 Expanded(
-                  flex: 2,
-                  child: SizedBox(
-                    height: 48,
-                    child: ElevatedButton(
-                      child: const Text(
-                        "＋",
-                        style: TextStyle(color: Colors.black),
-                      ),
-                      style: ElevatedButton.styleFrom(
-                          backgroundColor: Color.fromARGB(255, 201, 223, 233),
-                          shape: BeveledRectangleBorder(side: BorderSide.none)),
-                      onPressed: () {},
+                  flex: 1,
+                  child: ElevatedButton(
+                    child: const Text(
+                      "＋",
+                      style: TextStyle(color: Colors.black),
                     ),
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: Color.fromARGB(255, 201, 223, 233),
+                        shape: BeveledRectangleBorder(side: BorderSide.none)),
+                    onPressed: () {},
                   ),
                 ),
                 Expanded(
                   flex: 4,
                   child: Container(
-                    color: Color.fromARGB(255, 169, 201, 228),
+                    color: Color.fromARGB(255, 160, 189, 212),
                     child: DropdownButton(
                       underline: Container(
                         height: 0,
@@ -114,7 +118,7 @@ class _task_list_338State extends State<task_list_338> {
                       value: dropdownVal2,
                       icon: const Icon(Icons.expand_more, color: Colors.black),
                       style: const TextStyle(color: Colors.black),
-                      dropdownColor: Color.fromARGB(255, 169, 201, 228),
+                      dropdownColor: const Color.fromARGB(255, 160, 189, 212),
                       onChanged: (String? newVal2) {
                         setState(() {
                           dropdownVal2 = newVal2!;
@@ -129,14 +133,6 @@ class _task_list_338State extends State<task_list_338> {
                           value: "grupe",
                           child: Text("グループ"),
                         ),
-                        DropdownMenuItem<String>(
-                          value: "medea",
-                          child: Text("メディあ"),
-                        ),
-                        DropdownMenuItem<String>(
-                          value: "engin",
-                          child: Text("機械"),
-                        ),
                       ],
                     ),
                   ),
@@ -144,7 +140,7 @@ class _task_list_338State extends State<task_list_338> {
                 Expanded(
                   flex: 4,
                   child: Container(
-                    color: Color.fromARGB(255, 130, 185, 230),
+                    color: Color.fromARGB(255, 126, 176, 216),
                     child: DropdownButton(
                       underline: Container(
                         height: 0,
@@ -152,21 +148,13 @@ class _task_list_338State extends State<task_list_338> {
                       value: dropdownVal1,
                       icon: const Icon(Icons.expand_more, color: Colors.black),
                       style: const TextStyle(color: Colors.black),
-                      dropdownColor: Color.fromARGB(255, 130, 185, 230),
+                      dropdownColor: const Color.fromARGB(255, 126, 176, 216),
                       onChanged: (String? newVal1) {
                         setState(() {
                           dropdownVal1 = newVal1!;
                         });
                       },
                       items: const [
-                        DropdownMenuItem<String>(
-                          value: "short",
-                          child: Text("期限表示(短)"),
-                        ),
-                        DropdownMenuItem<String>(
-                          value: "long",
-                          child: Text("期限表示(長)"),
-                        ),
                         DropdownMenuItem<String>(
                           value: "hard",
                           child: Text("難易度準(難)"),
@@ -175,120 +163,27 @@ class _task_list_338State extends State<task_list_338> {
                           value: "ez",
                           child: Text("難易度準(簡)"),
                         ),
+                        DropdownMenuItem<String>(
+                          value: "short",
+                          child: Text("期限表示(短)"),
+                        ),
+                        DropdownMenuItem<String>(
+                          value: "long",
+                          child: Text("期限表示(長)"),
+                        ),
                       ],
                     ),
                   ),
                 ),
               ],
             ),
-            Column(
-                children: work_list.map(
-              (work) {
-                return TextButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => ListUiWidget(
-                                  group: group,
-                                  task: work,
-                                )),
-                      );
-                    },
-                    child: Padding(
-                        padding: EdgeInsets.all(20),
-                        child: Container(
-                          width: double.infinity,
-                          padding: EdgeInsets.all(30),
-                          decoration: BoxDecoration(
-                            color: Colors.orange,
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Row(
-                            children: [
-                              Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "★★★★★",
-                                      style: TextStyle(color: Colors.black),
-                                    ),
-                                    SizedBox(
-                                      height: 10,
-                                    ),
-                                    Text(
-                                      work,
-                                      style: TextStyle(color: Colors.black),
-                                    ),
-                                  ]),
-                              Spacer(
-                                flex: 1,
-                              ),
-                              FutureBuilder(
-                                future: _text(work),
-                                builder: (BuildContext context,
-                                    AsyncSnapshot<Widget> snapshot) {
-                                  if (snapshot.connectionState ==
-                                      ConnectionState.waiting) {
-                                    return CircularProgressIndicator();
-                                  } else if (snapshot.hasError) {
-                                    return Text(
-                                      'Error: ${snapshot.error}',
-                                      style: TextStyle(color: Colors.black),
-                                    );
-                                  } else {
-                                    return snapshot.data!;
-                                  }
-                                },
-                              ),
-                            ],
-                          ),
-                        )));
-              },
-            ).toList())
-            //  Column(
-            //    children: [
-            //      const SizedBox(
-            //        height: 10,
-            //     ),
-            //     IconButton(
-            //        onPressed: _addItem,
-            //       icon: const Icon(Icons.add),
-            //     ),
-            //     //  ここから、、　　　　　　　　　　　　　　　！！！！！！
-            //     Expanded(
-            //       child: AnimatedList(
-            //         key: _key,
-            //         initialItemCount: 0,
-            //         padding: const EdgeInsets.all(10),
-            //         itemBuilder: (context, index, animation) {
-            //           return SizeTransition(
-            //             key: UniqueKey(),
-            //             sizeFactor: animation,
-            //             child: Card(
-            //               margin: const EdgeInsets.all(10),
-            //               color: Colors.orange,
-            //               child: ListTile(
-            //                 title: Text(
-            //                   _items[index],
-            //                   style: const TextStyle(fontSize: 24),
-            //                 ),
-            //                 trailing: IconButton(
-            //                   icon: const Icon(Icons.delete),
-            //                   onPressed: () {
-            //                     _removeItem(index);
-            //                   },
-            //                 ),
-            //               ),
-            //             ),
-            //           );
-            //         },
-            //       ),
-            //     ),
-            //     //　ここまで、、
-            //   ],
-            // ),
+            Text(
+              
+          "$geto",
+          textAlign: TextAlign.end,
+        ),
+        
+
           ],
         ),
       ),
@@ -297,7 +192,14 @@ class _task_list_338State extends State<task_list_338> {
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           FloatingActionButton(
-            onPressed: () {},
+            //------------------------
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => newgroup()),
+              );
+            },
+            //------------------------
             backgroundColor: Color.fromARGB(255, 228, 228, 228),
             child: Icon(
               Icons.groups,
@@ -316,9 +218,10 @@ class _task_list_338State extends State<task_list_338> {
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(180)),
           ),
-        ],
+        ],        
       ),
       bottomNavigationBar: SingleChildScrollView(),
+      
     );
   }
 }

@@ -47,13 +47,9 @@ class Database {
   }
 
   //全てのドキュメントを取得
-  Future<List> docread(String group, bool sort) async {
+  Future<List> docread(String group) async {
     List docList = [];
-    await FirebaseFirestore.instance
-        .collection(group)
-        .orderBy('deadline', descending: sort)
-        .get()
-        .then(
+    await FirebaseFirestore.instance.collection(group).get().then(
           (QuerySnapshot querySnapshot) => {
             querySnapshot.docs.forEach(
               (doc) {

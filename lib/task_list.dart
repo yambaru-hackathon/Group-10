@@ -1,3 +1,4 @@
+import 'package:first/database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
@@ -66,6 +67,21 @@ Widget _buildFloatingActionButton() {
 }
 
 class _task_list_338State extends State<task_list_338> {
+  List work_list = [];
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    adding();
+  }
+
+  void adding() async {
+    List Work_list = await Database().docread("メディア");
+    setState(() {
+      work_list = Work_list;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -180,16 +196,52 @@ class _task_list_338State extends State<task_list_338> {
                   ),
                 ],
               ),
-              // Column(
-              //   children: [
-              //     const SizedBox(
-              //       height: 10,
+              Column(
+                  children: work_list.map(
+                (work) {
+                  return TextButton(
+                      onPressed: () async {},
+                      child: Padding(
+                          padding: EdgeInsets.all(20),
+                          child: Container(
+                            width: double.infinity,
+                            padding: EdgeInsets.all(30),
+                            decoration: BoxDecoration(
+                              color: Colors.orange,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Row(
+                              children: [
+                                Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Text("★★★★★"),
+                                      SizedBox(
+                                        height: 10,
+                                      ),
+                                      Text(work),
+                                    ]),
+                                Spacer(
+                                  flex: 1,
+                                ),
+                                Text("デッドライン"),
+                              ],
+                            ),
+                          )));
+                },
+              ).toList())
+              //  Column(
+              //    children: [
+              //      const SizedBox(
+              //        height: 10,
               //     ),
               //     IconButton(
-              //       onPressed: _addItem,
+              //        onPressed: _addItem,
               //       icon: const Icon(Icons.add),
               //     ),
-              //     //
+              //     //  ここから、、　　　　　　　　　　　　　　　！！！！！！
               //     Expanded(
               //       child: AnimatedList(
               //         key: _key,
@@ -219,7 +271,7 @@ class _task_list_338State extends State<task_list_338> {
               //         },
               //       ),
               //     ),
-              //     //
+              //     //　ここまで、、
               //   ],
               // ),
             ],

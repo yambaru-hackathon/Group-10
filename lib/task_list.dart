@@ -2,8 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:first/database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'list_ui.dart';
+import 'newgroup.dart';
 
 class task_list extends StatelessWidget {
   const task_list({super.key});
@@ -52,7 +54,7 @@ Widget _buildFloatingActionButton() {
 
 class _task_list_338State extends State<task_list_338> {
   List work_list = [];
-  String group = "メディア";
+  String group = "";
   bool sort = false;
 
   @override
@@ -60,6 +62,15 @@ class _task_list_338State extends State<task_list_338> {
     // TODO: implement initState
     super.initState();
     adding();
+  }
+
+  _loadCounter() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.reload();
+    setState(() {
+      group = prefs.getString('name') ?? '';
+    });
+    await prefs.reload();
   }
 
   void adding() async {
@@ -306,7 +317,14 @@ class _task_list_338State extends State<task_list_338> {
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           FloatingActionButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => newgroup()),
+              ).then((value) {
+                _loadCounter();
+              });
+            },
             backgroundColor: Color.fromARGB(255, 228, 228, 228),
             child: Icon(
               Icons.groups,

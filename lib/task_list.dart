@@ -106,7 +106,7 @@ class _task_list_338State extends State<task_list_338> {
                 Expanded(
                   flex: 4,
                   child: Container(
-                    color: Color.fromARGB(255, 160, 189, 212),
+                    color: Color.fromARGB(255, 169, 201, 228),
                     child: DropdownButton(
                       underline: Container(
                         height: 0,
@@ -114,7 +114,7 @@ class _task_list_338State extends State<task_list_338> {
                       value: dropdownVal2,
                       icon: const Icon(Icons.expand_more, color: Colors.black),
                       style: const TextStyle(color: Colors.black),
-                      dropdownColor: const Color.fromARGB(255, 160, 189, 212),
+                      dropdownColor: Color.fromARGB(255, 169, 201, 228),
                       onChanged: (String? newVal2) {
                         setState(() {
                           dropdownVal2 = newVal2!;
@@ -144,7 +144,7 @@ class _task_list_338State extends State<task_list_338> {
                 Expanded(
                   flex: 4,
                   child: Container(
-                    color: Color.fromARGB(255, 126, 176, 216),
+                    color: Color.fromARGB(255, 130, 185, 230),
                     child: DropdownButton(
                       underline: Container(
                         height: 0,
@@ -152,7 +152,7 @@ class _task_list_338State extends State<task_list_338> {
                       value: dropdownVal1,
                       icon: const Icon(Icons.expand_more, color: Colors.black),
                       style: const TextStyle(color: Colors.black),
-                      dropdownColor: const Color.fromARGB(255, 126, 176, 216),
+                      dropdownColor: Color.fromARGB(255, 130, 185, 230),
                       onChanged: (String? newVal1) {
                         setState(() {
                           dropdownVal1 = newVal1!;

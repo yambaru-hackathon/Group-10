@@ -76,7 +76,7 @@ class _task_list_338State extends State<task_list_338> {
   }
 
   void adding() async {
-    List Work_list = await Database().docread("メディア");
+    List Work_list = await Database().docread("メディア", false);
     setState(() {
       work_list = Work_list;
     });

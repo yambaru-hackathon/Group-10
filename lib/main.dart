@@ -129,7 +129,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: Text('読み込み')),
             ElevatedButton(
                 onPressed: () async {
-                  doclist = await Database().docread(group);
+                  //doclist = await Database().docread(group);
                   debugPrint(doclist.toString());
                 },
                 child: Text('task一覧')),

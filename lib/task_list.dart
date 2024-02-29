@@ -1,5 +1,3 @@
-import 'dart:js_util';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:first/database.dart';
 import 'package:flutter/material.dart';
@@ -170,6 +168,7 @@ class _task_list_338State extends State<task_list_338> {
                           } else if (newVal1 == 'long') {
                             sort = true;
                           }
+                          adding();
                         });
                       },
                       items: const [
@@ -224,10 +223,6 @@ class _task_list_338State extends State<task_list_338> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
-                                    Text(
-                                      "★★★★★",
-                                      style: TextStyle(color: Colors.black),
-                                    ),
                                     SizedBox(
                                       height: 10,
                                     ),

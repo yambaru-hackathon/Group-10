@@ -72,7 +72,7 @@ class _CreateTaskState extends State<CreateTask> {
           ],
         ),
         SizedBox(
-          height: 40,
+          height: 60,
           width: 300,
           child: TextField(
             decoration: InputDecoration(
@@ -93,7 +93,7 @@ class _CreateTaskState extends State<CreateTask> {
           ],
         ),
         SizedBox(
-          height: 40,
+          height: 60,
           width: 300,
           child: TextField(
             decoration: InputDecoration(

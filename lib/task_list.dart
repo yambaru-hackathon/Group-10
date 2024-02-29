@@ -2,6 +2,8 @@ import 'package:first/database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
+import 'list_ui.dart';
+
 class task_list_338 extends StatefulWidget {
   const task_list_338({super.key});
 
@@ -68,6 +70,7 @@ Widget _buildFloatingActionButton() {
 
 class _task_list_338State extends State<task_list_338> {
   List work_list = [];
+  String group = "メディア";
   @override
   void initState() {
     // TODO: implement initState
@@ -76,7 +79,7 @@ class _task_list_338State extends State<task_list_338> {
   }
 
   void adding() async {
-    List Work_list = await Database().docread("メディア");
+    List Work_list = await Database().docread(group);
     setState(() {
       work_list = Work_list;
     });
@@ -200,7 +203,16 @@ class _task_list_338State extends State<task_list_338> {
                   children: work_list.map(
                 (work) {
                   return TextButton(
-                      onPressed: () async {},
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ListUiWidget(
+                                    group: group,
+                                    task: work,
+                                  )),
+                        );
+                      },
                       child: Padding(
                           padding: EdgeInsets.all(20),
                           child: Container(

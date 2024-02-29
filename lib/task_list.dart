@@ -1,3 +1,6 @@
+import 'dart:js_util';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:first/database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -52,6 +55,8 @@ Widget _buildFloatingActionButton() {
 class _task_list_338State extends State<task_list_338> {
   List work_list = [];
   String group = "メディア";
+  bool sort = false;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -60,15 +65,19 @@ class _task_list_338State extends State<task_list_338> {
   }
 
   void adding() async {
-    List Work_list = await Database().docread(group, false);
+    debugPrint(sort.toString());
+    List Work_list = await Database().docread(group, sort);
     setState(() {
       work_list = Work_list;
     });
   }
 
   Future<Widget> _text(String task) async {
-    DateTime datetime = await Database().fldread(group, task, "deadline");
-    return Text("${datetime.year}/${datetime.month}/${datetime.day}");
+    Timestamp data = await Database().fldread(group, task, "deadline");
+    DateTime datetime = data.toDate();
+
+    return Text("${datetime.year}/${datetime.month}/${datetime.day}",
+        style: TextStyle(color: Colors.black));
   }
 
   @override
@@ -156,6 +165,11 @@ class _task_list_338State extends State<task_list_338> {
                       onChanged: (String? newVal1) {
                         setState(() {
                           dropdownVal1 = newVal1!;
+                          if (newVal1 == 'short') {
+                            sort = false;
+                          } else if (newVal1 == 'long') {
+                            sort = true;
+                          }
                         });
                       },
                       items: const [

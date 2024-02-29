@@ -5,8 +5,8 @@ class Database {
   final db = FirebaseFirestore.instance;
 
   //データの追加
-  Future<void> create(
-      String group, String task, String deadline, String url, int level) async {
+  Future<void> create(String group, String task, Timestamp deadline, String url,
+      int level) async {
     await db.collection(group).doc(task).set({
       'group': group,
       'task': task,

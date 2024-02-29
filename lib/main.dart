@@ -1,5 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'addtask.dart';
 import 'firebase_options.dart';
 import 'database.dart';
 import 'list_ui.dart';
@@ -11,7 +13,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(const task_list());
+  runApp(task_list());
 }
 
 class MyApp extends StatelessWidget {
@@ -106,7 +108,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ElevatedButton(
                 onPressed: () {
                   final service = Database();
-                  Database().create(group, task, deadline, url, 0);
+                  //Database().create(group, task, deadline, url, 0);
                 },
                 child: Text('追加')),
             ElevatedButton(

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:first/database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -237,7 +238,7 @@ class _CreateTaskState extends State<CreateTask> {
                 Database().create(
                     selectedItem!,
                     task.text,
-                    '${selectedDate.year}/${selectedDate.month}/${selectedDate.day}',
+                    Timestamp.fromDate(selectedDate),
                     url.text,
                     _sliderValue.toInt());
               } else {

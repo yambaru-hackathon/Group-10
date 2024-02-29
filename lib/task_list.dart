@@ -1,17 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
-class MyWidget extends StatelessWidget {
-  const MyWidget({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: task_list_338(),
-    );
-  }
-}
-
 class task_list_338 extends StatefulWidget {
   const task_list_338({super.key});
 
@@ -21,6 +10,36 @@ class task_list_338 extends StatefulWidget {
 
 String dropdownVal1 = "hard";
 String dropdownVal2 = "all";
+final _items = [];
+final GlobalKey<AnimatedListState> _key = GlobalKey();
+
+void _addItem() {
+  _items.insert(0, "Item ${_items.length + 1}");
+  _key.currentState!.insertItem(0, duration: const Duration(seconds: 1));
+}
+
+void _removeItem(int index) {
+  _key.currentState!.removeItem(
+    index,
+    (_, animation) {
+      return SizeTransition(
+        sizeFactor: animation,
+        child: const Card(
+          margin: EdgeInsets.all(10),
+          color: Colors.red,
+          child: ListTile(
+            title: Text(
+              "Deleted",
+              style: TextStyle(fontSize: 24),
+            ),
+          ),
+        ),
+      );
+    },
+    duration: const Duration(milliseconds: 300),
+  );
+  _items.removeAt(index);
+}
 
 Widget _buildBackground() {
   return Container(
@@ -47,135 +66,220 @@ Widget _buildFloatingActionButton() {
 }
 
 class _task_list_338State extends State<task_list_338> {
+  List<String> work_list = [
+    "テスト課題",
+    "英語のやつ",
+    "残りのいろいろ",
+    "英語のやつ",
+    "残りのいろいろ",
+    "テスト課題",
+    "英語のやつ",
+    "残りのいろいろ",
+    "英語のやつ",
+    "残りのいろいろ",
+    "テスト課題",
+    "英語のやつ",
+    "残りのいろいろ",
+    "英語のやつ",
+    "残りのいろいろ",
+  ];
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: const Text(
-          "課題一覧",
-          textAlign: TextAlign.end,
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(
+          centerTitle: true,
+          title: const Text(
+            "課題一覧",
+            textAlign: TextAlign.end,
+          ),
+          backgroundColor: const Color.fromARGB(255, 54, 171, 244),
         ),
-        backgroundColor: const Color.fromARGB(255, 54, 171, 244),
-      ),
-      body: SingleChildScrollView(
-        child: Column(
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  Expanded(
+                    flex: 2,
+                    child: SizedBox(
+                      height: 48,
+                      child: ElevatedButton(
+                        child: const Text(
+                          "＋",
+                          style: TextStyle(color: Colors.black),
+                        ),
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: Color.fromARGB(255, 201, 223, 233),
+                            shape:
+                                BeveledRectangleBorder(side: BorderSide.none)),
+                        onPressed: () {},
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    flex: 4,
+                    child: Container(
+                      color: Color.fromARGB(255, 160, 189, 212),
+                      child: DropdownButton(
+                        underline: Container(
+                          height: 0,
+                        ),
+                        value: dropdownVal2,
+                        icon:
+                            const Icon(Icons.expand_more, color: Colors.black),
+                        style: const TextStyle(color: Colors.black),
+                        dropdownColor: const Color.fromARGB(255, 160, 189, 212),
+                        onChanged: (String? newVal2) {
+                          setState(() {
+                            dropdownVal2 = newVal2!;
+                          });
+                        },
+                        items: const [
+                          DropdownMenuItem<String>(
+                            value: "all",
+                            child: Text("全部"),
+                          ),
+                          DropdownMenuItem<String>(
+                            value: "grupe",
+                            child: Text("グループ"),
+                          ),
+                          DropdownMenuItem<String>(
+                            value: "medea",
+                            child: Text("メディあ"),
+                          ),
+                          DropdownMenuItem<String>(
+                            value: "engin",
+                            child: Text("機械"),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    flex: 4,
+                    child: Container(
+                      color: Color.fromARGB(255, 126, 176, 216),
+                      child: DropdownButton(
+                        underline: Container(
+                          height: 0,
+                        ),
+                        value: dropdownVal1,
+                        icon:
+                            const Icon(Icons.expand_more, color: Colors.black),
+                        style: const TextStyle(color: Colors.black),
+                        dropdownColor: const Color.fromARGB(255, 126, 176, 216),
+                        onChanged: (String? newVal1) {
+                          setState(() {
+                            dropdownVal1 = newVal1!;
+                          });
+                        },
+                        items: const [
+                          DropdownMenuItem<String>(
+                            value: "hard",
+                            child: Text("難易度準(難)"),
+                          ),
+                          DropdownMenuItem<String>(
+                            value: "ez",
+                            child: Text("難易度準(簡)"),
+                          ),
+                          DropdownMenuItem<String>(
+                            value: "short",
+                            child: Text("期限表示(短)"),
+                          ),
+                          DropdownMenuItem<String>(
+                            value: "long",
+                            child: Text("期限表示(長)"),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Column(
+                  children: work_list.map(
+                (work) {
+                  return Container(
+                    padding: EdgeInsets.all(50),
+                    decoration: BoxDecoration(color: Colors.orange),
+                    child: Text(work),
+                  );
+                },
+              ).toList())
+              //  Column(
+              //    children: [
+              //      const SizedBox(
+              //        height: 10,
+              //     ),
+              //     IconButton(
+              //        onPressed: _addItem,
+              //       icon: const Icon(Icons.add),
+              //     ),
+              //     //  ここから、、　　　　　　　　　　　　　　　！！！！！！
+              //     Expanded(
+              //       child: AnimatedList(
+              //         key: _key,
+              //         initialItemCount: 0,
+              //         padding: const EdgeInsets.all(10),
+              //         itemBuilder: (context, index, animation) {
+              //           return SizeTransition(
+              //             key: UniqueKey(),
+              //             sizeFactor: animation,
+              //             child: Card(
+              //               margin: const EdgeInsets.all(10),
+              //               color: Colors.orange,
+              //               child: ListTile(
+              //                 title: Text(
+              //                   _items[index],
+              //                   style: const TextStyle(fontSize: 24),
+              //                 ),
+              //                 trailing: IconButton(
+              //                   icon: const Icon(Icons.delete),
+              //                   onPressed: () {
+              //                     _removeItem(index);
+              //                   },
+              //                 ),
+              //               ),
+              //             ),
+              //           );
+              //         },
+              //       ),
+              //     ),
+              //     //　ここまで、、
+              //   ],
+              // ),
+            ],
+          ),
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+        floatingActionButton: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            Row(
-              children: [
-                Expanded(
-                  flex: 1,
-                  child: ElevatedButton(
-                    child: const Text(
-                      "＋",
-                      style: TextStyle(color: Colors.black),
-                    ),
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: Color.fromARGB(255, 201, 223, 233),
-                        shape: BeveledRectangleBorder(side: BorderSide.none)),
-                    onPressed: () {},
-                  ),
-                ),
-                Expanded(
-                  flex: 4,
-                  child: Container(
-                    color: Color.fromARGB(255, 160, 189, 212),
-                    child: DropdownButton(
-                      underline: Container(
-                        height: 0,
-                      ),
-                      value: dropdownVal2,
-                      icon: const Icon(Icons.expand_more, color: Colors.black),
-                      style: const TextStyle(color: Colors.black),
-                      dropdownColor: const Color.fromARGB(255, 160, 189, 212),
-                      onChanged: (String? newVal2) {
-                        setState(() {
-                          dropdownVal2 = newVal2!;
-                        });
-                      },
-                      items: const [
-                        DropdownMenuItem<String>(
-                          value: "all",
-                          child: Text("全部"),
-                        ),
-                        DropdownMenuItem<String>(
-                          value: "grupe",
-                          child: Text("グループ"),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                Expanded(
-                  flex: 4,
-                  child: Container(
-                    color: Color.fromARGB(255, 126, 176, 216),
-                    child: DropdownButton(
-                      underline: Container(
-                        height: 0,
-                      ),
-                      value: dropdownVal1,
-                      icon: const Icon(Icons.expand_more, color: Colors.black),
-                      style: const TextStyle(color: Colors.black),
-                      dropdownColor: const Color.fromARGB(255, 126, 176, 216),
-                      onChanged: (String? newVal1) {
-                        setState(() {
-                          dropdownVal1 = newVal1!;
-                        });
-                      },
-                      items: const [
-                        DropdownMenuItem<String>(
-                          value: "hard",
-                          child: Text("難易度準(難)"),
-                        ),
-                        DropdownMenuItem<String>(
-                          value: "ez",
-                          child: Text("難易度準(簡)"),
-                        ),
-                        DropdownMenuItem<String>(
-                          value: "short",
-                          child: Text("期限表示(短)"),
-                        ),
-                        DropdownMenuItem<String>(
-                          value: "long",
-                          child: Text("期限表示(長)"),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
+            FloatingActionButton(
+              onPressed: () {},
+              backgroundColor: Color.fromARGB(255, 228, 228, 228),
+              child: Icon(
+                Icons.groups,
+                color: Colors.black,
+              ),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(180)),
+            ),
+            FloatingActionButton(
+              onPressed: () {},
+              backgroundColor: Color.fromARGB(255, 228, 228, 228),
+              child: Icon(
+                Icons.calendar_month,
+                color: Colors.black,
+              ),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(180)),
             ),
           ],
         ),
+        bottomNavigationBar: SingleChildScrollView(),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-      floatingActionButton: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          FloatingActionButton(
-            onPressed: () {},
-            backgroundColor: Color.fromARGB(255, 228, 228, 228),
-            child: Icon(
-              Icons.groups,
-              color: Colors.black,
-            ),
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(180)),
-          ),
-          FloatingActionButton(
-            onPressed: () {},
-            backgroundColor: Color.fromARGB(255, 228, 228, 228),
-            child: Icon(
-              Icons.calendar_month,
-              color: Colors.black,
-            ),
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(180)),
-          ),
-        ],
-      ),
-      bottomNavigationBar: SingleChildScrollView(),
     );
   }
 }

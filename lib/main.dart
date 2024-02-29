@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:html/parser.dart';
 import 'package:http/http.dart';
+import 'addurl.dart';
 import 'firebase_options.dart';
 import 'database.dart';
 import 'list_ui.dart';
@@ -15,7 +16,7 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   List url = await Database().fldread('メディア', '数学', 'url');
-  runApp(ListUiWidget(group: 'メディア', task: '数学', url: url));
+  runApp(ListUiWidget(group: 'メディア', task: '数学'));
 }
 
 class MyApp extends StatelessWidget {

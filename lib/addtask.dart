@@ -71,8 +71,8 @@ class _CreateTaskState extends State<CreateTask> {
           ],
         ),
         SizedBox(
-          height: 40,
           width: 300,
+          height: 60,
           child: TextField(
             decoration: InputDecoration(
               border: OutlineInputBorder(),
@@ -92,8 +92,8 @@ class _CreateTaskState extends State<CreateTask> {
           ],
         ),
         SizedBox(
-          height: 40,
           width: 300,
+          height: 60,
           child: TextField(
             decoration: InputDecoration(
               border: OutlineInputBorder(),
@@ -216,7 +216,7 @@ class _CreateTaskState extends State<CreateTask> {
         SizedBox(height: 40),
         ElevatedButton(
           onPressed: () async {
-            doclist = await Database().docread(selectedItem!);
+            doclist = await Database().docread(selectedItem);
             doclist.forEach(
               (element) {
                 if (element == task.text) {

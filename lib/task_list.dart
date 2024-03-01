@@ -3,7 +3,9 @@ import 'package:first/database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
+import 'addtask.dart';
 import 'list_ui.dart';
 import 'newgroup.dart';
 
@@ -56,21 +58,23 @@ class _task_list_338State extends State<task_list_338> {
   List work_list = [];
   String group = "";
   bool sort = false;
+  WebViewController? webViewController;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    _loadCounter();
     adding();
   }
 
   _loadCounter() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.reload();
-    setState(() {
+    setState(() async {
       group = prefs.getString('name') ?? '';
+      await prefs.reload();
     });
-    await prefs.reload();
   }
 
   void adding() async {
@@ -117,7 +121,13 @@ class _task_list_338State extends State<task_list_338> {
                       style: ElevatedButton.styleFrom(
                           backgroundColor: Color.fromARGB(255, 201, 223, 233),
                           shape: BeveledRectangleBorder(side: BorderSide.none)),
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => AddTask(group: [group])),
+                        );
+                      },
                     ),
                   ),
                 ),
@@ -322,7 +332,11 @@ class _task_list_338State extends State<task_list_338> {
                 context,
                 MaterialPageRoute(builder: (context) => newgroup()),
               ).then((value) {
-                _loadCounter();
+                setState(() {
+                  _loadCounter();
+                  initState();
+                  webViewController!.reload();
+                });
               });
             },
             backgroundColor: Color.fromARGB(255, 228, 228, 228),

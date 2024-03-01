@@ -83,20 +83,23 @@ class _ListUiState extends State<ListUi> {
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(180)),
         ),
-        body: ListView(
-          children: List.generate(
-            url.length,
-            (index) => FutureBuilder(
-              future: _menuItem(url[index]),
-              builder: (BuildContext context, AsyncSnapshot<Widget> snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return CircularProgressIndicator();
-                } else if (snapshot.hasError) {
-                  return Text('Error: ${snapshot.error}');
-                } else {
-                  return snapshot.data!;
-                }
-              },
+        body: Expanded(
+          child: ListView(
+            children: List.generate(
+              url.length,
+              (index) => FutureBuilder(
+                future: _menuItem(url[index]),
+                builder:
+                    (BuildContext context, AsyncSnapshot<Widget> snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return CircularProgressIndicator();
+                  } else if (snapshot.hasError) {
+                    return Text('Error: ${snapshot.error}');
+                  } else {
+                    return snapshot.data!;
+                  }
+                },
+              ),
             ),
           ),
         ));

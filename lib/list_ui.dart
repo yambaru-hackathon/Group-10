@@ -56,53 +56,51 @@ class _ListUiState extends State<ListUi> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-            centerTitle: true,
-            title: Text(
-              '${group}/${task}',
-              style: TextStyle(color: Colors.black),
-            ),
-            backgroundColor: const Color.fromRGBO(189, 255, 255, 1)),
-        floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => Addurl(group: group, task: task)),
-            ).then((value) async {
-              List Url = await Database().fldread(group, task, 'url');
-
-              setState(() {
-                url = Url;
-              });
-            });
-          },
-          backgroundColor: Color.fromARGB(255, 228, 228, 228),
-          child: const Text('+'),
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(180)),
-        ),
-        body: Expanded(
-          child: ListView(
-            children: List.generate(
-              url.length,
-              (index) => FutureBuilder(
-                future: _menuItem(url[index]),
-                builder:
-                    (BuildContext context, AsyncSnapshot<Widget> snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return CircularProgressIndicator();
-                  } else if (snapshot.hasError) {
-                    return Text('Error: ${snapshot.error}');
-                  } else {
-                    return snapshot.data!;
-                  }
-                },
-              ),
-            ),
+      appBar: AppBar(
+          centerTitle: true,
+          title: Text(
+            '${group}/${task}',
+            style: TextStyle(color: Colors.black),
           ),
-        ));
+          backgroundColor: const Color.fromRGBO(189, 255, 255, 1)),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => Addurl(group: group, task: task)),
+          ).then((value) async {
+            List Url = await Database().fldread(group, task, 'url');
+
+            setState(() {
+              url = Url;
+            });
+          });
+        },
+        backgroundColor: Color.fromARGB(255, 228, 228, 228),
+        child: const Text('+'),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(180)),
+      ),
+      body: ListView(
+        physics: const ClampingScrollPhysics(),
+        children: List.generate(
+          url.length,
+          (index) => FutureBuilder(
+            future: _menuItem(url[index]),
+            builder: (BuildContext context, AsyncSnapshot<Widget> snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return CircularProgressIndicator();
+              } else if (snapshot.hasError) {
+                return Text('Error: ${snapshot.error}');
+              } else {
+                return snapshot.data!;
+              }
+            },
+          ),
+        ),
+      ),
+    );
   }
 
   Future<Widget> _link(String url) async {
@@ -126,7 +124,8 @@ class _ListUiState extends State<ListUi> {
           ),
           child: Text(
             title,
-            style: const TextStyle(fontSize: 12),
+            style: const TextStyle(fontSize: 10),
+            softWrap: true,
           ),
         );
       },

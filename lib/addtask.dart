@@ -251,7 +251,6 @@ class _CreateTaskState extends State<CreateTask> {
                     });
               }
             }
-            Navigator.of(context).pop();
           },
           child: Text(
             '追加',

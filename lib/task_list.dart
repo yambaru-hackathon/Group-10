@@ -104,6 +104,43 @@ class _task_list_338State extends State<task_list_338> {
         ),
         backgroundColor: const Color.fromARGB(255, 54, 171, 244),
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+      floatingActionButton: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          FloatingActionButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => newgroup()),
+              ).then((value) {
+                setState(() {
+                  _loadCounter();
+                  webViewController!.reload();
+                });
+              });
+            },
+            backgroundColor: Color.fromARGB(255, 228, 228, 228),
+            child: Icon(
+              Icons.groups,
+              color: Colors.black,
+            ),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(180)),
+          ),
+          FloatingActionButton(
+            onPressed: () {},
+            backgroundColor: Color.fromARGB(255, 228, 228, 228),
+            child: Icon(
+              Icons.calendar_month,
+              color: Colors.black,
+            ),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(180)),
+          ),
+        ],
+      ),
+      bottomNavigationBar: SingleChildScrollView(),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -277,89 +314,9 @@ class _task_list_338State extends State<task_list_338> {
                         )));
               },
             ).toList())
-            //  Column(
-            //    children: [
-            //      const SizedBox(
-            //        height: 10,
-            //     ),
-            //     IconButton(
-            //        onPressed: _addItem,
-            //       icon: const Icon(Icons.add),
-            //     ),
-            //     //  ここから、、　　　　　　　　　　　　　　　！！！！！！
-            //     Expanded(
-            //       child: AnimatedList(
-            //         key: _key,
-            //         initialItemCount: 0,
-            //         padding: const EdgeInsets.all(10),
-            //         itemBuilder: (context, index, animation) {
-            //           return SizeTransition(
-            //             key: UniqueKey(),
-            //             sizeFactor: animation,
-            //             child: Card(
-            //               margin: const EdgeInsets.all(10),
-            //               color: Colors.orange,
-            //               child: ListTile(
-            //                 title: Text(
-            //                   _items[index],
-            //                   style: const TextStyle(fontSize: 24),
-            //                 ),
-            //                 trailing: IconButton(
-            //                   icon: const Icon(Icons.delete),
-            //                   onPressed: () {
-            //                     _removeItem(index);
-            //                   },
-            //                 ),
-            //               ),
-            //             ),
-            //           );
-            //         },
-            //       ),
-            //     ),
-            //     //　ここまで、、
-            //   ],
-            // ),
           ],
         ),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-      floatingActionButton: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          FloatingActionButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => newgroup()),
-              ).then((value) {
-                setState(() {
-                  _loadCounter();
-                  initState();
-                  webViewController!.reload();
-                });
-              });
-            },
-            backgroundColor: Color.fromARGB(255, 228, 228, 228),
-            child: Icon(
-              Icons.groups,
-              color: Colors.black,
-            ),
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(180)),
-          ),
-          FloatingActionButton(
-            onPressed: () {},
-            backgroundColor: Color.fromARGB(255, 228, 228, 228),
-            child: Icon(
-              Icons.calendar_month,
-              color: Colors.black,
-            ),
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(180)),
-          ),
-        ],
-      ),
-      bottomNavigationBar: SingleChildScrollView(),
     );
   }
 }
